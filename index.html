@@ -940,370 +940,8 @@
 <script>
 // ========== DATA ==========
 // 各ブルワリーの近似座標 [lng, lat] (rank をキーに)
-const COORDS = {
-  1:  [136.7104, 34.4869], // ISEKADO 三重県伊勢市
-  2:  [135.4708, 34.8285], // 箕面ビール 大阪府箕面市
-  3:  [138.3828, 34.9756], // WCB 静岡県静岡市
-  4:  [138.9450, 34.9700], // Baird 静岡県伊豆市
-  5:  [138.4300, 36.7325], // 志賀高原ビール 長野県山ノ内町
-  6:  [135.8048, 34.6851], // 奈良醸造 奈良県奈良市
-  7:  [133.5500, 35.4500], // 大山Gビール 鳥取県西伯郡
-  8:  [131.6650, 32.5817], // 宮崎ひでじ 宮崎県延岡市
-  9:  [135.5023, 34.6937], // CRAFT BEER BASE 大阪府大阪市
-  10: [139.7016, 35.6580], // SVB 東京都
-  11: [140.4836, 36.4607], // 常陸野ネスト 茨城県那珂市
-  12: [138.6314, 36.3489], // ヤッホー 長野県軽井沢町
-  13: [139.4858, 35.9251], // COEDO 埼玉県川越市
-  14: [138.4163, 35.7728], // うちゅう 山梨県北杜市
-  15: [139.6380, 35.4437], // 横浜ベイ 神奈川県横浜市
-  16: [139.7300, 35.6092], // DevilCraft 東京都品川区
-  17: [135.7681, 35.0116], // 京都醸造 京都府京都市
-  18: [136.9066, 35.1815], // Y.MARKET 愛知県名古屋市
-  19: [138.7575, 35.4979], // 富士桜高原麦酒 山梨県富士河口湖町
-  20: [135.7553, 35.0269], // Bighand 京都府京都市西陣
-  21: [139.7707, 35.6762], // CRAFTROCK 東京都中央区
-  22: [138.9433, 35.7497], // Far Yeast 山梨県小菅村
-  23: [139.0967, 35.7888], // VERTERE 東京都奥多摩町
-  24: [139.2080, 37.8328], // スワンレイク 新潟県阿賀野市
-  25: [137.0501, 35.1830], // Totopia 愛知県長久手市
-  26: [139.2914, 36.0269], // Teenage 埼玉県ときがわ町
-  27: [144.3167, 43.2333], // Brasserie Knot 北海道鶴居村
-  28: [142.4667, 43.4500], // 忽布古丹 北海道上富良野町
-  29: [141.5697, 38.9085], // Black Tide 宮城県気仙沼市
-  30: [138.8631, 35.0951], // RePuBrew 静岡県沼津市
-  31: [139.4040, 35.3300], // 湘南ビール 神奈川県茅ヶ崎市
-  32: [139.7100, 35.7295], // Inkhorn 東京都豊島区
-  33: [139.0233, 37.9026], // エチゴビール 新潟県新潟市
-  34: [133.5311, 33.5597], // South Horizon 高知県高知市
-  35: [138.4533, 36.9230], // Anglo Japanese 長野県野沢温泉村
-  36: [140.4644, 40.6033], // Be Easy 青森県弘前市
-  37: [135.5400, 33.8650], // Nomcraft 和歌山県
-  38: [139.6422, 35.4521], // 横浜ビール 神奈川県横浜市
-  39: [139.7522, 35.6249], // T.Y.HARBOR 東京都品川区天王洲
-  40: [135.1956, 34.6906], // Open Air 兵庫県神戸市
-  41: [139.3625, 35.4422], // サンクトガーレン 神奈川県厚木市
-  42: [141.1527, 39.7036], // ベアレン 岩手県盛岡市
-  43: [140.4172, 35.5977], // 寒菊銘醸 千葉県山武市
-  44: [140.7000, 38.2333], // Great Dane 宮城県仙台市秋保
-  45: [130.1872, 32.4561], // AMAKUSA SONAR 熊本県天草市
-  46: [138.5683, 35.6642], // Outsider 山梨県甲府市
-  47: [131.5006, 33.2786], // Beppu 大分県別府市
-  48: [139.7333, 36.3922], // うしとら 栃木県下都賀郡
-  49: [137.2533, 36.1439], // 飛騨高山麦酒 岐阜県高山市
-  50: [140.2225, 35.7228]  // ロコビア 千葉県佐倉市
-};
-const BREWERIES = [
-  { rank:1, name:"ISEKADO (伊勢角屋麦酒)", location:"三重県伊勢市", flagship:"ヒメホワイト/ペールエール", category:"B", tier:"S", score:96.0, axis:{1:5,2:5,3:4,4:5}, availability:"Limited", confidence:"High", provisional:false, changed:false, chatgpt:{score:89.0, tier:"S", rank:2}, gemini:{score:96.0, tier:"S", rank:1}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営, 鈴木氏東北大学農学部卒(博士号は誤情報疑い)", counterargument:"IBA UK Gold ×4 大会連続が事実誤認 → S 89.0、IBC2024 Gold ×2 が他社受賞 → S 86.0", evidences:[
-    {axis:1, type:"IBA UK Gold", detail:"2024 NAMA-KADO Smoked Oyster Stout Gold + Trophy", url:"https://prtimes.jp/main/html/rd/p/000000003.000086893.html", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"IBA UK Gold", detail:"2024 Pale Ale Smallpack Ale Class 3", url:"https://www.kadoyahonten.co.jp/isekado/award-history/", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"IBC Gold", detail:"IBC 2024 Gold Sailing Day NZ IPA", url:"https://www.beertaster.org/medal/ibc2024_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"IBC Gold", detail:"IBC 2024 Gold ねこにひき Hazy Imperial IPA", url:"https://www.beertaster.org/medal/ibc2024_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"科学的QC", detail:"島津製作所共同研究 GC-MS 分析", url:"https://www.shimadzu.co.jp/today/20240130-1.html", priority:4, verified:true, conf:"High"},
-    {axis:3, type:"独自酵母", detail:"野生酵母 KADOYA1 単離 → ヒメホワイト", url:"https://www.biyagura.jp/f/isekadoya-president", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"業界影響", detail:"科学的アプローチで業界教育・人材輩出", url:"https://www.shimadzu.co.jp/boomerang/42/06.html", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:2, name:"箕面ビール", location:"大阪府箕面市", flagship:"Pilsner / Stout", category:"B", tier:"S", score:92.0, axis:{1:5,2:5,3:3,4:5}, availability:"Standard", confidence:"High", provisional:false, changed:true, changeReason:"WBC2025 Stout Gold 発見で A→S 昇格", chatgpt:{score:82.0, tier:"A", rank:11}, gemini:{score:92.0, tier:"S", rank:3}, untappd:{score:3.68, ratings:52043, url:"https://untappd.com/MinohBeer"}, notes:"独立運営", counterargument:"WBC2025 Stout Gold が公式 PDF で確認できない場合 → A 84.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2025 Gold Stout Classic Irish-Style Dry Stout", url:"https://www.minoh-beer.jp/info/14718/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Bronze", detail:"WBC2024 Bronze Pilsner Bohemian-Style Pilsener", url:"https://www.minoh-beer.jp/info/12235/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Bronze", detail:"WBC2025 Bronze Pilsner Bohemian-Style Pilsener", url:"https://www.minoh-beer.jp/info/14718/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Silver", detail:"WBC2026 Silver Stout Classic Irish-Style Dry Stout", url:"https://store.minoh-beer.jp/products/wbc-a", priority:2, verified:true, conf:"Mid"},
-    {axis:2, type:"品質一貫性", detail:"定番ピルスナーの長期一貫性", url:"https://www.minoh-beer.jp/info/12235/", priority:5, verified:true, conf:"High"},
-    {axis:3, type:"王道スタイル", detail:"王道スタイルを極める設計思想", url:"https://www.therealjapan.com/japanese-craft-beer-beginners-guide/", priority:4, verified:true, conf:"Mid"},
-    {axis:4, type:"業界重鎮", detail:"日本クラシック派の代表格", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:3, name:"West Coast Brewing", location:"静岡県静岡市", flagship:"Starwatcher / The Gateway", category:"C", tier:"S", score:91.0, axis:{1:5,2:4,3:5,4:4}, availability:"Allocation", confidence:"High", provisional:false, changed:true, changeReason:"WBC2026 Gold (Gateway) は誤りで、実は WBC2025 Gold。根拠 URL 修正", chatgpt:{score:84.0, tier:"A", rank:9}, gemini:{score:93.0, tier:"S", rank:2}, untappd:{score:3.98, ratings:110113, url:"https://untappd.com/West_Coast_Brewing"}, notes:"独立運営", counterargument:"Gateway WBC2025 Gold が誤情報 → A 80.0、Untappd スクレイピングミス → A 87.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2025 Gold The Gateway Pastry Stout (※Gemini WBC2026と誤記)", url:"https://x.com/WCBShizuoka/status/1918155905763516492", priority:5, verified:true, conf:"High"},
-    {axis:1, type:"Untappd", detail:"3.98 / 110,113 ratings", url:"https://untappd.com/West_Coast_Brewing", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"生産規模", detail:"552 beers リリースで Untappd 3.98 維持", url:"https://untappd.com/West_Coast_Brewing", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"独自世界観", detail:"Hop Dude世界観・毎週新作・CBD等実験", url:"https://beertengoku.com/2020/07/03/west-coast-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"国内影響力", detail:"国内ホップ主義の象徴", url:"https://beertengoku.com/2020/07/03/west-coast-brewing-information/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:4, name:"Baird Brewing", location:"静岡県伊豆市", flagship:"Wabi-Sabi Japan Pale Ale", category:"A", tier:"S", score:90.0, axis:{1:4,2:4,3:5,4:5}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:90.0, tier:"S", rank:1}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:3.52, ratings:131420, url:"https://untappd.com/bairdbeer"}, notes:"独立運営, Gemini Q7で業界影響力過小評価を自認", counterargument:"Untappd 131k ratings の質を「観光客中心」と評価 → 業界影響力=4 で S 86.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.52 / 131,420 ratings (国内最大級レビュー数)", url:"https://untappd.com/bairdbeer", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"理念世界観", detail:"Balance + Complexity = Character / 485 beers", url:"https://bairdbeer.com/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"歴史的シンボル", detail:"日本クラフト史の先行組・海外開拓者", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"Gemini自認", detail:"Gemini Q7「ベアードは業界影響力過小評価」", url:"#gemini-q7", priority:5, verified:true, conf:"High"}
-  ]},
-  { rank:5, name:"志賀高原ビール", location:"長野県山ノ内町", flagship:"志賀高原 IPA", category:"A", tier:"S", score:90.0, axis:{1:4,2:4,3:5,4:5}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:86.0, tier:"S", rank:6}, gemini:{score:90.0, tier:"S", rank:4}, untappd:{score:null, ratings:null, url:"https://untappd.com/TamamuraHonten"}, notes:"玉村本店 / Untappd brewery aggregate 取得不能", counterargument:"テロワール表現の独自性(革新性=5)を4と判定 → S 86.0", evidences:[
-    {axis:1, type:"Untappd個別", detail:"個別ビール 3.6-4.1 (House IPA 3.9, Takashi Ichiro 4.1) ※brewery aggregateは取得不可", url:"https://untappd.com/b/tamamura-honten-co-shiga-kogen-ipa/69113", priority:3, verified:true, conf:"Mid"},
-    {axis:3, type:"テロワール", detail:"自家栽培ホップ・酒米・木樽熟成テロワール体現", url:"https://tamamura-honten.co.jp/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"歴史シンボル", detail:"日本クラフト史のシンボル / SNOW MONKEY BEER LIVE主催", url:"https://diskgarage.com/digaonline/news/202932", priority:4, verified:true, conf:"High"},
-  ]},
-  { rank:6, name:"奈良醸造", location:"奈良県奈良市", flagship:"FUNCTION / LIGHTHOUSE", category:"B", tier:"S", score:87.0, axis:{1:5,2:4,3:4,4:4}, availability:"Limited", confidence:"High", provisional:false, changed:false, chatgpt:{score:87.0, tier:"S", rank:3}, gemini:{score:87.0, tier:"S", rank:7}, untappd:{score:3.77, ratings:16820, url:"https://untappd.com/w/nara-brewing-co/400970"}, notes:"独立運営", counterargument:"WBC2026 Gold ×2 の片方が異議申立で取り消された場合 → A 83.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2026 Gold Function American-Belgo-Style Ale", url:"https://narabrewing.com/20260424blog", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Gold", detail:"WBC2026 Gold Lighthouse", url:"https://narabrewing.com/20260424blog", priority:1, verified:true, conf:"High"},
-    {axis:2, type:"同年ダブル金", detail:"主力2銘柄が同年WBCで同時金賞", url:"https://narabrewing.com/20260424blog", priority:1, verified:true, conf:"High"},
-    {axis:3, type:"独自設計", detail:"American-Belgo + 低ABV黒系設計 アートワーク融合", url:"https://beertengoku.com/2020/01/03/nara-brewing-company-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"ブランド影響", detail:"Nara を世界地図に載せる 関西全域影響", url:"https://beertengoku.com/2020/01/03/nara-brewing-company-information/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:7, name:"大山Gビール", location:"鳥取県西伯郡", flagship:"ピルスナー / 八郷", category:"A", tier:"S", score:87.0, axis:{1:5,2:4,3:4,4:4}, availability:"Standard", confidence:"High", provisional:false, changed:true, changeReason:"WBA2025 Style Winner ×2 + Category Champion (世界1位×2) 確認で S 昇格", chatgpt:{score:null, tier:"圏外", rank:null}, gemini:{score:86.0, tier:"S", rank:10}, untappd:{score:null, ratings:null, url:null}, notes:"久米桜麦酒, 2011年 Weizen World's Best (2回目世界一)", counterargument:"WBA Style Winner が「単なる Country Winner」と再分類 → A 83.0", evidences:[
-    {axis:1, type:"WBA World's Best", detail:"WBA2025 World's Best Strong Wheat Beer Weizenbock (Style Winner)", url:"https://www.worldbeerawards.com/winner-beer/beer/2025/worlds-best-international-lager-61064-world-beer-awards-2025", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBA Category Champion", detail:"WBA2025 World's Best Dark Beer Barley Wine (Category 全体の頂点)", url:"https://www.worldbeerawards.com/winner-beer/worlds-best-dark-barley-wine-61033-world-beer-awards-2025", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Bronze", detail:"WBC2025 Bronze Stout Brown Porter", url:"http://g-beer.jp/p/g-beer/2/10/8/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"IBC Gold", detail:"IBC2025 Gold Pilsner", url:"http://g-beer.jp/p/g-beer/2/10/12/", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"WBA Country Winner", detail:"WBA2024 Country Winner Pilsner", url:"https://www.worldbeerawards.com/winner-beer/country-winner-52033-world-beer-awards-2024", priority:1, verified:true, conf:"High"},
-    {axis:3, type:"独自原料", detail:"酒米八郷・強吟など先駆的取組", url:"https://beereast.wordpress.com/2016/05/20/daisen-g-yago-daisen-g-yago-aki-agari/", priority:4, verified:true, conf:"Mid"},
-    {axis:4, type:"地域×国際", detail:"地域密着と国際評価の高度な両立", url:"https://untappd.com/b/kumezakura-daisen-brewery-daisen-g-yago/57502", priority:3, verified:true, conf:"Mid"}
-  ]},
-  { rank:8, name:"宮崎ひでじビール", location:"宮崎県延岡市", flagship:"KURI KURO", category:"A", tier:"S", score:87.0, axis:{1:5,2:4,3:4,4:4}, availability:"Limited", confidence:"High", provisional:false, changed:false, chatgpt:{score:87.0, tier:"S", rank:4}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営", counterargument:"WBA2024 World's Best Dark Barley Wine が他社受賞 → A 80.0", evidences:[
-    {axis:1, type:"WBA World's Best", detail:"WBA2024 World's Best Dark Barley Wine 生賴バーレイワイン (世界1位)", url:"https://www.worldbeerawards.com/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Gold", detail:"WBC2022 Gold KURI KURO Dark Chestnut Ale Specialty Beer", url:"https://hideji-beer.jp/award/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Silver", detail:"WBC2023 Silver 太陽のラガー Kellerbier", url:"https://hideji-beer.jp/award/", priority:1, verified:true, conf:"Mid"},
-    {axis:1, type:"WBA Country Winner", detail:"WBA2024 Country Winner YAHAZU Munich Helles 2年連続", url:"https://www.worldbeerawards.com/", priority:1, verified:true, conf:"Mid"},
-    {axis:1, type:"JGBA Gold", detail:"JGBA2023 Gold 栗黒 Freestyle High Alcohol Dark Ale", url:"https://www.beertaster.org/medal/jgba2023_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:3, type:"固有素材", detail:"栗黒という固有性", url:"https://hideji-beer.jp/award/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"海外認知", detail:"BeerAdvocate/RateBeer/Untappd/TasteAtlas 海外網羅 (RateBeer 2018/2019 Japan Best)", url:"https://www.ratebeer.com/brewer/3544/", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:9, name:"CRAFT BEER BASE", location:"大阪府大阪市", flagship:"Lavender & Chamomile / Pilsener", category:"B", tier:"S", score:87.0, axis:{1:5,2:4,3:4,4:4}, availability:"Limited", confidence:"High", provisional:false, changed:true, changeReason:"WBC2026 Silver + WBC2025 Bronze + JGBA2026 Gold 等の確認で S 帯確定", chatgpt:{score:null, tier:"圏外", rank:null}, gemini:{score:87.0, tier:"S", rank:6}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営", counterargument:"WBC2026 Silver の銘柄詳細が不明・誤りだった場合 → A 81.0", evidences:[
-    {axis:1, type:"WBC Silver", detail:"WBC2026 Silver Southern German Style Pilsener", url:"https://www.worldbeercup.org/news/world-beer-cup-2026-winners-announced/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Bronze", detail:"WBC2025 Bronze Lavender & Chamomile Herb & Spice Beer", url:"https://cdn.worldbeercup.org/wp-content/uploads/2025/05/27092752/WBC-list-25-updated.pdf", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"JGBA Gold", detail:"JGBA2026 Gold Lavender & Chamomile Herb & Spice", url:"https://beertaster.org/medal/jgba2026_award_location.pdf", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"ESBS推定", detail:"European Beer Star 2025 (推定 銘柄ランク未確定)", url:"https://craftbeerbase.com/news/rPkWjzMq", priority:5, verified:false, conf:"Mid-Low"},
-    {axis:3, type:"独自素材", detail:"独自ハーブ利用 Lavender & Chamomile", url:"https://craftbeerbase.com/news/rPkWjzMq", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"教育貢献", detail:"大阪を起点としたビール啓蒙・教育貢献", url:"https://craftbeerbase.com/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:10, name:"Spring Valley Brewery", location:"東京都ほか", flagship:"豊潤 / 496 / Silk Ale White", category:"D", tier:"S", score:86.0, axis:{1:5,2:5,3:3,4:4}, availability:"Mass", confidence:"High", provisional:false, changed:true, changeReason:"WBC2026 Silver + IBC2025 Gold/Silver/Bronze で技術的品質=5・一貫性=5に上方修正", chatgpt:{score:76.0, tier:"A", rank:17}, gemini:{score:86.0, tier:"S", rank:8}, untappd:{score:3.46, ratings:38558, url:"https://untappd.com/w/spring-valley-brewery/144027"}, notes:"キリン傘下", counterargument:"キリン本体ブランド扱いで除外条件適用 → TOP30圏外", evidences:[
-    {axis:1, type:"WBC Silver", detail:"WBC2026 Silver Silk Ale White (Hojun Lager 496) American-Style Amber Lager", url:"https://www.worldbeercup.org/news/world-beer-cup-2026-winners-announced/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"IBC Gold", detail:"IBC2025 Gold Magical Juicy Hop Session IPA Type", url:"https://beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"IBC Silver", detail:"IBC2025 Silver Jazzberry", url:"https://beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"IBC Bronze", detail:"IBC2025 Bronze 496 Hojun Lager", url:"https://beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"大手QC", detail:"大手資本(キリン)による完璧なQC", url:"https://www.springvalleybrewery.jp/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"都市拡大", detail:"都市型パブを通じたクラフト普及", url:"https://otonami.jp/experiences/springvalleybrewery/", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:11, name:"常陸野ネスト", location:"茨城県那珂市", flagship:"White Ale / Nipponia", category:"A", tier:"S", score:86.0, axis:{1:4,2:4,3:4,4:5}, availability:"Mass", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:86.0, tier:"S", rank:5}, gemini:{score:86.0, tier:"S", rank:11}, untappd:{score:null, ratings:null, url:"https://untappd.com/HitachinoNestBeer"}, notes:"木内酒造", counterargument:"海外BeerAdvocate White Ale 91/1768 ratingsの重みを業界影響力=4に下げる → A 84.0", evidences:[
-    {axis:1, type:"IBC Bronze", detail:"IBC2025 Bronze HITACHINO NEST DAI DAI ALE", url:"https://www.beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"JGBA Gold", detail:"JGBA2025 Gold (Kiuchi Brewery)", url:"https://www.beertaster.org/medal/jgba2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"輸出安定", detail:"輸出市場での長期安定性", url:"https://kiuchibrewery.co.jp/products/beer/", priority:5, verified:true, conf:"High"},
-    {axis:3, type:"和素材", detail:"赤米・福来みかん・Nipponia 和素材", url:"https://kiuchibrewery.co.jp/products/beer/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"海外定着", detail:"BeerAdvocate White Ale Score 91/1768 ratings 海外定着", url:"https://www.beeradvocate.com/beer/profile/697/2013/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"輸出パイオニア", detail:"日本クラフト海外輸出のパイオニア", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:12, name:"ヤッホーブルーイング", location:"長野県軽井沢町", flagship:"よなよなエール", category:"A", tier:"S", score:85.0, axis:{1:4,2:5,3:3,4:5}, availability:"Mass", confidence:"High", provisional:false, changed:false, chatgpt:{score:85.0, tier:"S", rank:7}, gemini:{score:85.0, tier:"S", rank:12}, untappd:{score:3.53, ratings:139143, url:"https://untappd.com/w/yo-ho-brewing-company/5859"}, notes:"大手本体ブランドではない (条件付き包含)", counterargument:"よなよなエール定番化を革新性=2と再評価 → A 81.0", evidences:[
-    {axis:1, type:"IBC Silver", detail:"IBC2025 Silver FAC IPA", url:"https://www.beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"缶QC", detail:"徹底した缶詰めQCとコールドチェーン", url:"https://toyokeizai.net/articles/-/55011?display=b", priority:4, verified:true, conf:"High"},
-    {axis:3, type:"市場開拓", detail:"よなよなエール定番化による市場開拓", url:"https://yohobrewing.com/", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"業界影響", detail:"10年連続GPTW選出 国内最大級シェア クラフト人口拡大", url:"https://yohobrewing.com/news_release/2026-gptw/", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:13, name:"COEDO", location:"埼玉県川越市", flagship:"毬花 Marihana / 瑠璃", category:"A", tier:"S", score:85.0, axis:{1:4,2:5,3:3,4:5}, availability:"Mass", confidence:"High", provisional:false, changed:false, chatgpt:{score:82.0, tier:"A", rank:10}, gemini:{score:85.0, tier:"S", rank:13}, untappd:{score:3.55, ratings:90748, url:"https://untappd.com/w/kyodo-shoji-coedo-brewery/8729"}, notes:"独立運営", counterargument:"Untappd 3.55/90748を「評価微妙」とみなす → A 81.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.55 / 90,748 ratings", url:"https://untappd.com/w/kyodo-shoji-coedo-brewery/8729", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"全国流通", detail:"全国流通下で主力品質維持", url:"https://coedobrewery.com/", priority:5, verified:true, conf:"High"},
-    {axis:3, type:"色名シリーズ", detail:"色名シリーズ 川越薩摩芋からの定番化", url:"https://coedobrewery.com/", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"全国象徴", detail:"全国区の象徴 海外輸出継続", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:14, name:"うちゅうブルーイング", location:"山梨県北杜市", flagship:"宇宙IPA", category:"C", tier:"A", score:84.0, axis:{1:4,2:4,3:5,4:4}, availability:"Allocation", confidence:"High", provisional:false, changed:false, chatgpt:{score:84.0, tier:"A", rank:8}, gemini:{score:87.0, tier:"S", rank:5}, untappd:{score:4.03, ratings:83411, url:"https://untappd.com/UchuBrewing"}, notes:"独立運営", counterargument:"WBC2026 Bronze だけでなく Gold/Silver があれば → S 87.0", evidences:[
-    {axis:1, type:"WBC Bronze", detail:"WBC2026 Bronze Uchu Pils West Coast-Style Pilsener", url:"https://www.worldbeercup.org/news/world-beer-cup-2026-winners-announced/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"Untappd", detail:"4.03 / 83,411 ratings 国内トップ級", url:"https://untappd.com/UchuBrewing", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"宇宙世界観", detail:"自社ホップ起点・宇宙世界観 Hazy IPA牽引", url:"https://beertengoku.com/2019/03/08/uchu-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"全国カルト", detail:"虎ノ門taproom拡張と全国的カルト化", url:"https://beertengoku.com/2019/03/08/uchu-brewing-information/", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:15, name:"横浜ベイブルーイング", location:"神奈川県横浜市", flagship:"BAYSTARS ALE / Yuzu Weiss", category:"B", tier:"A", score:81.0, axis:{1:5,2:4,3:3,4:4}, availability:"Standard", confidence:"High", provisional:false, changed:false, chatgpt:{score:76.0, tier:"A", rank:19}, gemini:{score:83.0, tier:"A", rank:14}, untappd:{score:3.67, ratings:7404, url:"https://untappd.com/w/yokohama-bay-brewing-co/27911"}, notes:"独立運営", counterargument:"業界影響力を「横浜地域中心」から「国際展開含む」に改めれば → S 85.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2024 Gold Yuzu Weiss", url:"https://archive.japanbeertimes.com/2024/04/wbc2024/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"IBC Silver", detail:"IBC2025 Silver BAYSTARS ALE", url:"https://www.beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"クリーン精密", detail:"クリーンスタイルと技術的精密さ", url:"https://untappd.com/w/yokohama-bay-brewing-co/27911", priority:3, verified:true, conf:"High"},
-    {axis:4, type:"地域中核", detail:"横浜シーン中核 業界認知", url:"https://beerboy.beer/blogs/brewery-scope/23-number-nine-brewery", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:16, name:"DevilCraft", location:"東京都品川区", flagship:"Black Igneous", category:"D", tier:"A", score:81.0, axis:{1:5,2:4,3:4,4:3}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:81.0, tier:"A", rank:12}, gemini:{score:83.0, tier:"A", rank:15}, untappd:{score:3.77, ratings:24098, url:"https://untappd.com/w/devilcraft-tokyo-brewery/233161"}, notes:"都市型 brewpub", counterargument:"業界影響力=3を4(都市型brewpub文化開拓者)に上げれば → A 84.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2024 Gold Black Igneous", url:"https://archive.japanbeertimes.com/2024/04/wbc2024/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"Untappd", detail:"3.77 / 24,098 ratings 514 beers brewpub高位", url:"https://untappd.com/w/devilcraft-tokyo-brewery/233161", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"スタイル強さ", detail:"IPAと黒系の強さ ピザペアリング文化", url:"https://untappd.com/user/justinyee/lists/12246083", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"外資系開拓", detail:"東京都市brewpub文化の外資系開拓者", url:"https://www.hopculture.com/best-craft-breweries-beer-bars-pubs-tokyo-japan/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:17, name:"京都醸造", location:"京都府京都市", flagship:"一意専心 / 一期一会", category:"B", tier:"A", score:80.0, axis:{1:4,2:4,3:4,4:4}, availability:"Standard", confidence:"High", provisional:false, changed:false, chatgpt:{score:80.0, tier:"A", rank:13}, gemini:{score:80.0, tier:"A", rank:17}, untappd:{score:3.75, ratings:55987, url:"https://untappd.com/KyotoBrewing"}, notes:"独立運営, Good Beer Hunting文脈", counterargument:"業界影響力を国際カルチャー文脈で再採点 → A上位〜S下位の余地", evidences:[
-    {axis:1, type:"Untappd", detail:"3.75 / 55,987 ratings 428 beers", url:"https://untappd.com/KyotoBrewing", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"製品安定", detail:"製品群の品質安定", url:"https://kyotobrewing.com/", priority:5, verified:true, conf:"High"},
-    {axis:3, type:"酵母×ホップ交配", detail:"ベルギー酵母×アメリカンホップ交配", url:"https://beertengoku.com/2019/05/10/kyoto-brewing-company-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"関西リーダー", detail:"関西圏リーダー 10年実績 海外メディア露出", url:"https://www.lonelyplanet.com/articles/kyoto-ji-biru-craft-beer", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:18, name:"Y.MARKET BREWING", location:"愛知県名古屋市", flagship:"Yellow Sky Pale Ale / ルプリンネクター", category:"C", tier:"A", score:80.0, axis:{1:4,2:4,3:4,4:4}, availability:"Standard", confidence:"High", provisional:false, changed:false, chatgpt:{score:80.0, tier:"A", rank:14}, gemini:{score:77.0, tier:"A", rank:19}, untappd:{score:3.76, ratings:49413, url:"https://untappd.com/w/y-market-brewing/116775"}, notes:"独立運営", counterargument:"一貫性=3 (713 beers での銘柄差) を強調 → A 78.0", evidences:[
-    {axis:1, type:"IBC Bronze", detail:"IBC2025 Bronze Yellow Sky Pale Ale", url:"https://www.beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"Untappd", detail:"3.76 / 49,413 ratings 713 beers", url:"https://untappd.com/w/y-market-brewing/116775", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"幅広スタイル", detail:"名駅圏軸の幅広いスタイル設計", url:"https://beertengoku.com/2018/11/30/y-market-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"中部中核", detail:"中部シーン中核", url:"https://beertengoku.com/2018/11/30/y-market-brewing-information/", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:19, name:"富士桜高原麦酒", location:"山梨県富士河口湖町", flagship:"ヴァイツェン / Marron B Abbey", category:"A", tier:"A", score:80.0, axis:{1:4,2:5,3:3,4:4}, availability:"Standard", confidence:"Mid", provisional:false, changed:true, changeReason:"Web再検証で JGBA2026 Gold ×2 (Marron B Abbey, Laoho) を確認、TOP30 復帰", chatgpt:{score:70.0, tier:"圏外", rank:null}, gemini:{score:86.0, tier:"S", rank:9}, untappd:{score:null, ratings:null, url:null}, notes:"ドイツ系老舗", counterargument:"JGBA2026 Gold ×2 が JGBA 公式に該当なし → 75 (B) へ", evidences:[
-    {axis:1, type:"JGBA Gold", detail:"JGBA2026 Gold Marron B Abbey Belgian-Style Fruit Beer", url:"https://www.fujizakura-beer.jp/%E3%80%8Cjapan-great-beer-awards-2026%E3%80%8D/", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"JGBA Gold", detail:"JGBA2026 Gold Laoho Bamberg-Style Märzen Rauchbier", url:"https://www.fujizakura-beer.jp/%E3%80%8Cjapan-great-beer-awards-2026%E3%80%8D/", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"WBA歴史", detail:"WBA2020 World's Best Lager Hoppy Pilsener Imperial Pilsner (歴史・評価期間外)", url:"https://www.worldbeerawards.com/winner-beer/worlds-best-lager-hoppy-pilsener-world-beer-awards-2020", priority:1, verified:true, conf:"High"},
-    {axis:2, type:"ドイツ系安定", detail:"ドイツスタイルの絶対的安定感", url:"https://www.tasteatlas.com/best-rated-beers-in-japan", priority:4, verified:true, conf:"High"},
-    {axis:3, type:"伝統追求", detail:"伝統的手法の徹底追求", url:"https://www.fujizakura-beer.jp/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:20, name:"Bighand Bros. Beer", location:"京都府京都市", flagship:"Andalusite / Flint", category:"C", tier:"A Prov.", score:78.0, axis:{1:5,2:3,3:4,4:3}, availability:"Allocation", confidence:"Low", provisional:true, founded:2023, changed:true, changeReason:"WBC2026 Gold (Flint) 発見で 2大会連続Gold、B Prov.→A Prov. に大幅昇格", chatgpt:{score:72.0, tier:"B Prov.", rank:25}, gemini:{score:72.0, tier:"B Prov.", rank:25}, untappd:{score:null, ratings:null, url:null}, notes:"2023年設立 / 操業3年 = Provisional", counterargument:"WBC2026 Gold(Flint)が誤情報 → B 70.0 / 2026年6月以降Provisional撤廃 → A 78.0確定", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2024 Gold Andalusite", url:"https://archive.japanbeertimes.com/2024/04/wbc2024/", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"WBC Gold", detail:"WBC2026 Gold Flint (Andalusite に続く2大会連続Gold)", url:"https://www.worldbeercup.org/news/world-beer-cup-2026-winners-announced/", priority:1, verified:true, conf:"High"},
-    {axis:2, type:"短歴史", detail:"2023開業 時系列短い", url:"https://www.bighandbros.com/pages/brewery", priority:5, verified:true, conf:"Mid"},
-    {axis:3, type:"地下醸造所", detail:"西陣の地下醸造所 デザイン融合", url:"https://marble-bldg.com/b1-bbb", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"急浮上", detail:"WBC連続Gold で発展途上から急浮上", url:"https://www.digistyle-kyoto.com/magazine/39413", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:21, name:"CRAFTROCK BREWING", location:"東京都中央区", flagship:"Sansho Lager", category:"D", tier:"A", score:78.0, axis:{1:5,2:3,3:4,4:3}, availability:"Standard", confidence:"Mid", provisional:false, changed:true, changeReason:"WBC2026 Gold (Sansho Lager) 発見で B→A 大幅昇格 (両AI重大見落とし)", chatgpt:{score:58.0, tier:"圏外相当", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"WBC2026 Japan Gold 5社の1つ", counterargument:"WBC2026 Gold(Sansho Lager)が他社受賞 → B 65.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2026 Gold Sansho Lager", url:"https://www.worldbeercup.org/news/world-beer-cup-2026-winners-announced/", priority:1, verified:true, conf:"High"},
-    {axis:2, type:"ブランド構築", detail:"都市型ブランド構築明確", url:"https://beerinfo.com/2026-world-beer-cup-medal_winners/", priority:5, verified:true, conf:"Mid"},
-    {axis:3, type:"音楽文化", detail:"音楽/カルチャー接続明確", url:"https://www.youtube.com/watch?v=-EgT4BHTHdo", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"scene上昇", detail:"scene influence限定だがWBC Gold で評価上昇", url:"https://beerinfo.com/2026-world-beer-cup-medal_winners/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:22, name:"Far Yeast Brewing", location:"山梨県小菅村", flagship:"Tokyo White / Off Trail", category:"D", tier:"A", score:77.0, axis:{1:4,2:3,3:4,4:4}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:77.0, tier:"A", rank:15}, gemini:{score:80.0, tier:"A", rank:18}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営, 源流醸造所", counterargument:"一貫性=3を4(国内外流通安定)に上げれば → A 78.0", evidences:[
-    {axis:1, type:"WBC Bronze", detail:"WBC2022 Bronze Tokyo White", url:"https://cdn.worldbeercup.org/wp-content/uploads/2022/05/06094630/WBC22-Winners-List.pdf", priority:1, verified:true, conf:"High"},
-    {axis:1, type:"IBC Gold", detail:"IBC2024 Gold (Far Yeast公式記載)", url:"https://faryeast.com/en/pages/award", priority:2, verified:true, conf:"Mid"},
-    {axis:3, type:"樽熟成", detail:"Genryu Brewery と Hop Frontier Off Trail", url:"https://beertengoku.com/2016/02/12/far-yeast-brewing-company/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"グローバル志向", detail:"東京発グローバル志向", url:"https://beertengoku.com/2016/02/12/far-yeast-brewing-company/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:23, name:"VERTERE", location:"東京都奥多摩町", flagship:"Westbound 系 / Passiflora", category:"C", tier:"A", score:77.0, axis:{1:4,2:3,3:4,4:4}, availability:"Allocation", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:77.0, tier:"A", rank:16}, gemini:{score:80.0, tier:"A", rank:16}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営, hype brewery", counterargument:"recent硬賞ない為、技術的品質=3に下げれば → B 73.0", evidences:[
-    {axis:1, type:"hype評価", detail:"recent hard-award不在 cult評価中心", url:"https://verterebrew.com/", priority:5, verified:true, conf:"Low"},
-    {axis:2, type:"taproom拡張", detail:"taproom拡張 缶展開", url:"https://beertengoku.com/2019/05/17/vertere-beer-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"奥多摩世界観", detail:"Okutama文脈の世界観", url:"https://beertengoku.com/2019/05/17/vertere-beer-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"複数taproom", detail:"横浜含む複数taproom展開", url:"https://beertengoku.com/2019/05/17/vertere-beer-information/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:24, name:"スワンレイクビール", location:"新潟県阿賀野市", flagship:"Porter", category:"A", tier:"A", score:76.0, axis:{1:4,2:4,3:3,4:4}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:76.0, tier:"A", rank:18}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:3.63, ratings:14839, url:"https://untappd.com/w/hyouko-yashiki-no-mori-brewery-swan-lake-beer/5724/beer"}, notes:"独立運営, Gemini TOP30外", counterargument:"技術的品質=4を維持できる根拠が弱い場合 → B 72.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.63 / 14,839 ratings", url:"https://untappd.com/w/hyouko-yashiki-no-mori-brewery-swan-lake-beer/5724/beer", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"老舗安定", detail:"老舗定番の安定感", url:"https://www.swanlake.co.jp/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"北信越歴史", detail:"北信越の歴史的プレゼンス", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:25, name:"Totopia Brewery", location:"愛知県長久手市", flagship:"Phobia シリーズ", category:"C", tier:"A Prov.", score:75.0, axis:{1:4,2:3,3:5,4:3}, availability:"Allocation", confidence:"Mid", provisional:true, founded:2022, changed:false, chatgpt:{score:75.0, tier:"A Prov.", rank:20}, gemini:{score:75.0, tier:"B Prov.", rank:23}, untappd:{score:null, ratings:null, url:null}, notes:"2022年設立 / 4年目 (Provisional境界)", counterargument:"Provisional撤廃 + Untappd 4.011 検証 → A 78.0", evidences:[
-    {axis:1, type:"Untappd主張", detail:"Gemini Untappd 4.011 (未検証)", url:"https://craftbeerhunt.net/brewery/totopia-brewery", priority:3, verified:false, conf:"Low"},
-    {axis:2, type:"中期蓄積", detail:"2022設立 中期蓄積段階", url:"https://beertengoku.com/2024/04/12/totopia-brewery-information/", priority:4, verified:true, conf:"High"},
-    {axis:3, type:"極端スタイル", detail:"Phobia系列 極端な濁り酸味 大量副原料", url:"https://www.pen-online.jp/article/016891.html", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"愛知HAZY", detail:"愛知HAZY新世代象徴 ギーク層支持", url:"https://www.japanbrewerscup.jp/totopia_brewery.html", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:26, name:"Teenage Brewing", location:"埼玉県ときがわ町", flagship:"Hazy Jane", category:"C", tier:"A Prov.", score:75.0, axis:{1:4,2:3,3:5,4:3}, availability:"Allocation", confidence:"Low", provisional:true, founded:2023, changed:false, chatgpt:{score:75.0, tier:"A Prov.", rank:24}, gemini:{score:null, tier:"惜しい5", rank:null}, untappd:{score:3.93, ratings:12188, url:"https://untappd.com/w/teenage-brewing/542053"}, notes:"2023年設立 / 3年目 / 両AI暗黙合意で TOP30 入り", counterargument:"2026年6月以降 Provisional撤廃 + Untappd 3.93 → A 確定", evidences:[
-    {axis:1, type:"Untappd", detail:"3.93 / 12,188 ratings", url:"https://untappd.com/w/teenage-brewing/542053", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"短歴史", detail:"開業 2023-06 時系列短い", url:"https://beertengoku.com/2025/09/05/teenage-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:3, type:"音楽文化", detail:"ローカル農産物・音楽文脈", url:"https://beertengoku.com/2025/09/05/teenage-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"急伸中", detail:"影響力急伸中だが蓄積途上", url:"https://teenage.jp/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:27, name:"Brasserie Knot", location:"北海道鶴居村", flagship:"Wind", category:"E", tier:"B", score:74.0, axis:{1:4,2:4,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:74.0, tier:"B", rank:21}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:3.80, ratings:4660, url:"https://untappd.com/w/brasserie-knot/529612"}, notes:"独立運営", counterargument:"2025-2026 の公的賞 1 件追加で → A 75.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.80 / 4,660 ratings 33 beers (B上位の硬さ)", url:"https://untappd.com/w/brasserie-knot/529612", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"小規模一貫性", detail:"33 beers で総合 3.80 維持", url:"https://untappd.com/w/brasserie-knot/529612", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"鶴居ローカル", detail:"鶴居・道東ローカル性 + 高評価", url:"https://brasserieknot.jp/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"地域限定", detail:"地域影響まだ限定的", url:"https://brasserieknot.jp/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:28, name:"忽布古丹醸造 (Hop Kotan)", location:"北海道上富良野町", flagship:"upopo / 無法地帯", category:"C", tier:"B", score:74.0, axis:{1:4,2:4,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:71.0, tier:"B", rank:30}, gemini:{score:76.0, tier:"A", rank:21}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営", counterargument:"上富良野ホップ100%を革新性=5と評価 → A 76.0", evidences:[
-    {axis:1, type:"Untappd上位", detail:"Untappd上位層", url:"https://untappd.com/UchuBrewing", priority:3, verified:true, conf:"Mid"},
-    {axis:2, type:"スタイル安定", detail:"ラガー・エール問わず安定", url:"https://rihobeer.com/japan-craft-beer-trends-2026/", priority:4, verified:true, conf:"High"},
-    {axis:3, type:"国産ホップ", detail:"上富良野産ホップ100%化挑戦", url:"https://rihobeer.com/japan-craft-beer-trends-2026/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"国産ホップ推進", detail:"国産ホップ推進重要プレイヤー", url:"https://rihobeer.com/japan-craft-beer-trends-2026/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:29, name:"Black Tide Brewing", location:"宮城県気仙沼市", flagship:"Kesennuma Pride", category:"E", tier:"B", score:74.0, axis:{1:4,2:4,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:71.0, tier:"B", rank:28}, gemini:{score:76.0, tier:"A", rank:22}, untappd:{score:null, ratings:null, url:null}, notes:"震災後気仙沼文脈 brewpub色強い", counterargument:"Untappd brewery aggregateが手動取得で3.8+なら → A 76.0", evidences:[
-    {axis:1, type:"専門メディア", detail:"brewery info 専門媒体露出", url:"https://beertengoku.com/2021/03/26/black-tide-brewing-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:2, type:"缶一貫性", detail:"缶製品の品質一貫性", url:"https://blacktidebrewing.com/en/", priority:5, verified:true, conf:"Mid"},
-    {axis:3, type:"震災復興", detail:"気仙沼復興連携の確固たるコンセプト", url:"https://blacktidebrewing.com/en/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"東北牽引", detail:"東北エリアクラフト市場牽引", url:"https://blacktidebrewing.com/en/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:30, name:"RePuBrew", location:"静岡県沼津市", flagship:"69IPA / Hop Kings", category:"C", tier:"B", score:72.5, axis:{1:4,2:3.5,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:74.0, tier:"B", rank:22}, gemini:{score:71.0, tier:"B", rank:26}, untappd:{score:null, ratings:null, url:null}, notes:"独立運営", counterargument:"一貫性を3.5→4に上げれば → B 74.0 (A境界)", evidences:[
-    {axis:1, type:"JGBA Gold", detail:"JGBA2026 Gold BARREL AGED", url:"https://www.repubrew.com/news/jgba2026prize.html", priority:2, verified:true, conf:"High"},
-    {axis:1, type:"WBC Bronze", detail:"WBC2026 Bronze", url:"https://www.repubrew.com/news/jgba2026prize.html", priority:5, verified:true, conf:"Mid"},
-    {axis:2, type:"限定主体ブレ", detail:"限定品主体ロットブレ散見", url:"https://untappd.com/", priority:3, verified:true, conf:"Mid"},
-    {axis:3, type:"ワイルドセゾン", detail:"多彩スタイル展開 ワイルドセゾン追求", url:"https://www.repubrew.com/news/jgba2026prize.html", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"静岡西側", detail:"静岡西側シーン存在感", url:"https://www.repubrew.com/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:31, name:"湘南ビール (熊澤酒造)", location:"神奈川県茅ヶ崎市", flagship:"ピルスナー / アルト", category:"B", tier:"B", score:72.5, axis:{1:3.5,2:4,3:3,4:4}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:69.0, tier:"圏外", rank:null}, gemini:{score:76.0, tier:"A", rank:20}, untappd:{score:null, ratings:null, url:null}, notes:"熊澤酒造、酒蔵併設、両AIで評価", counterargument:"技術的品質=4 (国内コンペ定連扱い) → A 75.0", evidences:[
-    {axis:1, type:"国内コンペ", detail:"国内コンペ定連 高評価蓄積", url:"https://untappd.com/", priority:3, verified:true, conf:"Mid"},
-    {axis:2, type:"酒蔵QC", detail:"酒蔵発の盤石な醸造・品質管理体制", url:"https://untappd.com/", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"伝統踏襲", detail:"伝統的スタイルの真摯な踏襲", url:"https://untappd.com/", priority:3, verified:true, conf:"Mid"},
-    {axis:4, type:"神奈川草分け", detail:"神奈川草分け的地位", url:"https://untappd.com/", priority:3, verified:true, conf:"High"}
-  ]},
-  { rank:32, name:"Inkhorn Brewing", location:"東京都豊島区", flagship:"Java Finch / Shima Fukuro", category:"C", tier:"B", score:71.0, axis:{1:4,2:3,3:4,4:3}, availability:"Limited", confidence:"Low", provisional:false, changed:false, chatgpt:{score:71.0, tier:"圏外", rank:null}, gemini:{score:74.0, tier:"B", rank:24}, untappd:{score:null, ratings:null, url:null}, notes:"目白発マイクロスケール", counterargument:"Untappd brewery aggregateが手動取得で 4.0+ なら → A 74.0", evidences:[
-    {axis:1, type:"専門メディア", detail:"BeerTengoku info 設計思想", url:"https://craftbeerguide.jp/brewery/inkhorn-brewing/", priority:4, verified:true, conf:"Mid"},
-    {axis:2, type:"鳥類モチーフ", detail:"鳥類モチーフ 緻密な完成度", url:"https://craftbeerguide.jp/brewery/inkhorn-brewing/", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"最新ホップ", detail:"最新ホップ製品Hop Kief積極活用", url:"https://www.late.beer/beer/inkhorn-shima_fukuro/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"目白小規模", detail:"目白発マイクロスケール 規模以上のギーク認知", url:"https://witchcraftmarket.com/collections/inkhorn-brewing", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:33, name:"エチゴビール", location:"新潟県新潟市", flagship:"Flying IPA / ピルスナー", category:"A", tier:"B", score:71.0, axis:{1:3,2:4,3:2,4:5}, availability:"Mass", confidence:"High", provisional:false, changed:false, chatgpt:{score:71.0, tier:"B", rank:29}, gemini:{score:71.0, tier:"B", rank:27}, untappd:{score:3.48, ratings:86144, url:"https://untappd.com/w/echigo-beer-co-ltd/1516"}, notes:"日本初の地ビール / 老舗 pioneer", counterargument:"「日本初」歴史性の業界影響力=5を3に下げる視点 → C 60.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.48 / 86,144 ratings", url:"https://untappd.com/w/echigo-beer-co-ltd/1516", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"全国安定", detail:"全国量販下で安定", url:"https://echigobeer.com/", priority:5, verified:true, conf:"High"},
-    {axis:3, type:"既存スタイル", detail:"既存スタイル忠実な再現中心 革新性限定", url:"https://echigobeer.com/", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"歴史的価値", detail:"日本最初の地ビール 殿堂入り認知", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"High"}
-  ]},
-  { rank:34, name:"South Horizon Brewing", location:"高知県高知市", flagship:"Fun Guy Fungi", category:"E", tier:"B", score:71.0, axis:{1:4,2:4,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:74.0, tier:"B", rank:23}, gemini:{score:null, tier:"圏外(80社内)", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"upcycling・椎茸・白麹の独自設計、ChatGPT単独評価", counterargument:"Gemini 80社内Phase 2 cut。recent公的賞1件で → A 75.0", evidences:[
-    {axis:1, type:"BT特集", detail:"BT taproom/info 記事から自社比率高い継続運営", url:"https://beertengoku.com/2025/04/18/south-horizon-brewing-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"upcycling", detail:"upcycling・椎茸・白麹独自素材", url:"https://beertengoku.com/2025/04/18/south-horizon-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"高知核", detail:"高知ローカル核として浮上", url:"https://www.southhorizon.jp/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:35, name:"Anglo Japanese Brewing", location:"長野県野沢温泉村", flagship:"Are / AJB Sane", category:"C", tier:"B", score:70.0, axis:{1:4,2:3,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:71.0, tier:"B", rank:26}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"Waste 2 Beer 系列、ChatGPT単独評価", counterargument:"recent公的賞確認できれば → B 73.0", evidences:[
-    {axis:1, type:"専門評価", detail:"AJB Are / AJB Sane 等の専門媒体評価", url:"https://beertengoku.com/2019/08/06/anglo-japanese-brewing-company-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:2, type:"開業期間", detail:"2014開始だがrecent hard-award未取得", url:"https://ajb.beer/", priority:5, verified:true, conf:"Mid"},
-    {axis:3, type:"Waste 2 Beer", detail:"Waste 2 Beer 系列 食品ロス活用", url:"https://beertengoku.com/2019/08/06/anglo-japanese-brewing-company-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"野沢温泉核", detail:"野沢温泉ローカル核", url:"https://ajb.beer/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:36, name:"Be Easy Brewing", location:"青森県弘前市", flagship:"Noresore / Gro Fe Lure", category:"E", tier:"B", score:70.0, axis:{1:4,2:3,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:71.0, tier:"B", rank:27}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"青森ローカル現代IPA、ChatGPT単独評価", counterargument:"缶展開拡大で一貫性=4 → B 73.0", evidences:[
-    {axis:1, type:"専門評価", detail:"Be Easy Noresore / Gro Fe Lure の専門媒体評価", url:"https://beertengoku.com/2018/06/22/be-easy-brewing-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:2, type:"draft缶過渡", detail:"draft偏重から缶展開の過渡期", url:"https://beertengoku.com/2018/06/22/be-easy-brewing-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"青森題材", detail:"青森題材の Great Things From Aomori 系", url:"https://www.beeasybrewing.com/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"東北注目株", detail:"東北の注目株だが影響は限定", url:"https://www.beeasybrewing.com/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:37, name:"Nomcraft Brewing", location:"和歌山県", flagship:"Revelation / Nomclassic", category:"C", tier:"B", score:70.0, axis:{1:4,2:3,3:4,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:71.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"米国起点、和歌山ローカル化、ChatGPT「惜しい」", counterargument:"Untappd brewery aggregate確認で → B 72.0", evidences:[
-    {axis:1, type:"専門レビュー", detail:"Revelation / Nomclassic 系の媒体レビュー", url:"https://beertengoku.com/2020/06/19/nomcraft-brewing-information/", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"米国起点", detail:"米国起点の設計と和歌山ローカル化", url:"https://beertengoku.com/2020/06/19/nomcraft-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"スタイル愛好", detail:"影響はスタイル愛好家中心", url:"https://beertengoku.com/2020/06/19/nomcraft-brewing-information/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:38, name:"横浜ビール", location:"神奈川県横浜市", flagship:"道志の湧水仕込ピルスナー", category:"E", tier:"B", score:70.0, axis:{1:4,2:4,3:3,4:3}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:70.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:3.50, ratings:10694, url:"https://untappd.com/w/yokohama-brewery/12559/beer"}, notes:"横浜地元 brewery", counterargument:"WBC/IBCのrecent受賞追加で → A 75.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.50 / 10,694 ratings", url:"https://untappd.com/w/yokohama-brewery/12559/beer", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"中堅安定", detail:"216 beers の中堅安定", url:"https://untappd.com/w/yokohama-brewery/12559/beer", priority:3, verified:true, conf:"Mid"},
-    {axis:4, type:"地域中心", detail:"地域プレゼンス中心", url:"https://beertengoku.com/2014/07/24/yokohama-brewery-information/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:39, name:"T.Y.HARBOR Brewery", location:"東京都品川区天王洲", flagship:"ペールエール", category:"D", tier:"B", score:69.5, axis:{1:3,2:4,3:3,4:4}, availability:"Tap-only", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:69.0, tier:"B(下位)", rank:null}, gemini:{score:70.0, tier:"B", rank:29}, untappd:{score:null, ratings:null, url:null}, notes:"1997創業、Tap-only流通", counterargument:"業界影響力を「都市型クラフト先行例」で5に上げれば → B 73.0", evidences:[
-    {axis:2, type:"レストラン主体", detail:"自社レストラン提供主体の安定感", url:"https://untappd.com/", priority:3, verified:true, conf:"High"},
-    {axis:3, type:"王道アメリカン", detail:"王道のアメリカンエール中心", url:"https://untappd.com/", priority:3, verified:true, conf:"Mid"},
-    {axis:4, type:"水辺都市文化", detail:"1997年創業 東京水辺エリアの文化醸成", url:"https://untappd.com/", priority:3, verified:true, conf:"High"}
-  ]},
-  { rank:40, name:"Open Air Brewing", location:"兵庫県神戸市", flagship:"Sansho Gose - Koji", category:"C", tier:"B", score:69.0, axis:{1:5,2:2,3:4,4:2}, availability:"Limited", confidence:"Low", provisional:false, changed:false, chatgpt:{score:69.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:"https://untappd.com/w/open-air-brewing/567546"}, notes:"WBC2025 Gold だが Untappd brewery 29 ratings で50件規則未達 → 技術的品質高評価が組込めず", counterargument:"Untappd手動50件以上確認で一貫性=4 → A 76.0", evidences:[
-    {axis:1, type:"WBC Gold", detail:"WBC2025 Gold Sansho Gose - Koji", url:"https://cdn.worldbeercup.org/wp-content/uploads/2025/05/27092752/WBC-list-25-updated.pdf", priority:1, verified:true, conf:"High"},
-    {axis:2, type:"Untappd未達", detail:"brewery aggregate 29 ratings (50件規則未達のためN/A)", url:"https://untappd.com/w/open-air-brewing/567546", priority:3, verified:true, conf:"Low"},
-    {axis:3, type:"神戸オープン", detail:"神戸・オープンエア/茶・麹系", url:"https://beertengoku.com/2022/11/25/open-air-brewing-information/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"影響薄", detail:"影響蓄積はまだ薄い", url:"https://beertengoku.com/2022/11/25/open-air-brewing-information/", priority:4, verified:true, conf:"Low"}
-  ]},
-  { rank:41, name:"サンクトガーレン", location:"神奈川県厚木市", flagship:"YOKOHAMA XPA / Imperial Chocolate Stout", category:"A", tier:"B", score:69.0, axis:{1:3,2:4,3:3,4:4}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:69.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:3.60, ratings:24481, url:"https://untappd.com/w/sankt-gallen-brewery/5720"}, notes:"日本地ビール初期代表格", counterargument:"recent国内コンペ受賞追加で技術的品質=4 → B 73.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.60 / 24,481 ratings", url:"https://untappd.com/w/sankt-gallen-brewery/5720", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"季節商品", detail:"定番継続と季節商品の長寿命", url:"https://www.sanktgallenbrewery.com/", priority:5, verified:true, conf:"High"},
-    {axis:4, type:"初期代表", detail:"日本地ビール初期の代表格の一つ", url:"https://untappd.com/w/sankt-gallen-brewery/5720", priority:3, verified:true, conf:"Mid"}
-  ]},
-  { rank:42, name:"ベアレン醸造所", location:"岩手県盛岡市", flagship:"クラシック", category:"A", tier:"B", score:69.0, axis:{1:3,2:4,3:3,4:4}, availability:"Standard", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:69.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:3.51, ratings:17794, url:"https://untappd.com/w/baeren-bier/6445"}, notes:"東北老舗", counterargument:"輸出/海外受賞追加で業界影響力=5 → A 75.0", evidences:[
-    {axis:1, type:"Untappd", detail:"3.51 / 17,794 ratings", url:"https://untappd.com/w/baeren-bier/6445", priority:3, verified:true, conf:"High"},
-    {axis:2, type:"ラガー安定", detail:"ラガー/クラシック系の安定感", url:"https://untappd.com/w/baeren-bier/6445", priority:3, verified:true, conf:"High"},
-    {axis:4, type:"東北老舗", detail:"東北老舗としての認知", url:"https://untappd.com/w/baeren-bier/6445", priority:3, verified:true, conf:"Mid"}
-  ]},
-  { rank:43, name:"寒菊銘醸 (Kankiku Brewery)", location:"千葉県山武市", flagship:"International Lager", category:"B", tier:"B", score:72.0, axis:{1:4,2:4,3:4,4:3}, availability:"Limited", confidence:"Low", provisional:false, changed:true, changeReason:"WBA2025 受賞を Web 再検証で確認、TOP50 入り", chatgpt:{score:null, tier:"圏外", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"日本酒蔵が手がけるモダンクラフト", counterargument:"WBA2025受賞詳細(Country Winner相当)が確認できれば → A 76.0", evidences:[
-    {axis:1, type:"WBA推定", detail:"WBA2025 受賞 (Gemini ロングリスト経由、銘柄詳細未確定)", url:"https://www.worldbeerawards.com/winner-beer/beer/2025/worlds-best-international-lager-61064-world-beer-awards-2025", priority:1, verified:false, conf:"Low"},
-    {axis:2, type:"日本酒蔵QC", detail:"日本酒蔵発の盤石な醸造管理", url:"https://prtimes.jp/main/html/rd/p/000000124.000103079.html", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"モダンクラフト", detail:"日本酒蔵が手がけるモダンクラフト", url:"https://prtimes.jp/main/html/rd/p/000000124.000103079.html", priority:4, verified:true, conf:"Mid"},
-    {axis:4, type:"急成長", detail:"国際大会メダル獲得を始め急成長", url:"https://prtimes.jp/main/html/rd/p/000000124.000103079.html", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:44, name:"Great Dane Brewing", location:"宮城県仙台市秋保", flagship:"BELGIAN TRIPEL", category:"D", tier:"B Prov.", score:70.0, axis:{1:4,2:4,3:3,4:3}, availability:"Standard", confidence:"Low", provisional:true, founded:2024, changed:false, chatgpt:{score:null, tier:"母集団外", rank:null}, gemini:{score:70.0, tier:"B Prov.", rank:28}, untappd:{score:null, ratings:null, url:null}, notes:"米国Wisconsin名門が2024年宮城秋保進出、操業2年", counterargument:"2026年6月以降 Provisional 撤廃 + JGBA金維持 → B 70.0確定", evidences:[
-    {axis:1, type:"JGBA Gold", detail:"JGBA2026 Gold (Belgian Tripel)", url:"https://greatdanebrewing.jp/news/", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"米国実績", detail:"米国実績ベースの盤石な技術・生産体制", url:"https://www.tohoku-local-secret-tours.jp/tourinfo/15556/", priority:5, verified:true, conf:"High"},
-    {axis:3, type:"米国レシピ", detail:"米国本場のレシピを宮城に直輸入", url:"https://shop.greatdanebrewing.jp/", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"黒船", detail:"2024年秋保進出の黒船的インパクト", url:"https://www.tohokuandtokyo.org/spot_249/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:45, name:"AMAKUSA SONAR BEER", location:"熊本県天草市", flagship:"フルーツスムージーサワー", category:"E", tier:"B", score:70.0, axis:{1:4,2:3,3:5,4:3}, availability:"Limited", confidence:"Low", provisional:false, changed:false, chatgpt:{score:null, tier:"圏外", rank:null}, gemini:{score:null, tier:"惜しい5", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"フルーツスムージーサワー pioneer、Gemini「惜しい5」", counterargument:"recent硬賞追加で技術的品質=5 → A 75.0", evidences:[
-    {axis:1, type:"カテゴリ革新", detail:"国内フルーツスムージーサワー市場切り拓き", url:"https://archive.japanbeertimes.com/2023/08/hanshinjra/", priority:4, verified:true, conf:"Mid"},
-    {axis:2, type:"スムージー一貫性", detail:"スムージーサワー領域での一貫した品質", url:"https://archive.japanbeertimes.com/2023/08/hanshinjra/", priority:4, verified:true, conf:"Mid"},
-    {axis:3, type:"独自カテゴリ", detail:"ニッチ領域における独自性は満点", url:"https://archive.japanbeertimes.com/2023/08/hanshinjra/", priority:4, verified:true, conf:"High"},
-    {axis:4, type:"パイオニア", detail:"フルーツビール文化の九州パイオニア", url:"https://archive.japanbeertimes.com/2023/08/hanshinjra/", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:46, name:"Outsider Brewing", location:"山梨県甲府市", flagship:"The Sith Imperial Stout", category:"E", tier:"B-", score:67.0, axis:{1:4,2:3,3:3,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:67.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"WBC2022 Bronze保有", counterargument:"recent追加受賞で一貫性=4 → B 70.0", evidences:[
-    {axis:1, type:"WBC Bronze", detail:"WBC2022 Bronze The Sith Imperial Stout", url:"https://cdn.worldbeercup.org/wp-content/uploads/2022/05/06094630/WBC22-Winners-List.pdf", priority:1, verified:true, conf:"High"},
-    {axis:3, type:"山梨ローカル", detail:"山梨ローカルと英語圏文脈", url:"https://untappd.com/", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"影響限定", detail:"影響は限定的", url:"https://untappd.com/", priority:5, verified:true, conf:"Mid"}
-  ]},
-  { rank:47, name:"Beppu Brewery", location:"大分県別府市", flagship:"温泉地ローカル", category:"E", tier:"B-", score:65.0, axis:{1:4,2:3,3:4,4:2}, availability:"Limited", confidence:"Low", provisional:false, changed:false, chatgpt:{score:65.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"WBC2024 Japan受賞勢", counterargument:"WBC2024受賞詳細確認で技術的品質=5 → B 70.0", evidences:[
-    {axis:1, type:"WBC2024記事", detail:"JBT WBC 2024 記事に掲載 (詳細未確定)", url:"https://archive.japanbeertimes.com/2024/04/wbc2024/", priority:1, verified:false, conf:"Low"},
-    {axis:3, type:"温泉地", detail:"温泉地ローカル性", url:"https://archive.japanbeertimes.com/2023/08/hanshinjra/", priority:4, verified:true, conf:"Mid"},
-    {axis:4, type:"影響限定", detail:"影響は限定", url:"https://archive.japanbeertimes.com/2023/08/hanshinjra/", priority:4, verified:true, conf:"Low"}
-  ]},
-  { rank:48, name:"うしとらブルワリー", location:"栃木県下都賀郡", flagship:"うしとら IPA", category:"B", tier:"C", score:64.0, axis:{1:3,2:3,3:4,4:3}, availability:"Limited", confidence:"Low", provisional:false, changed:false, chatgpt:{score:64.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"栃木新世代", counterargument:"recent硬賞・Untappd取得で技術的品質=4 → B 68.0", evidences:[
-    {axis:3, type:"栃木新世代", detail:"栃木新世代文脈", url:"https://beer-cruise.net/beer/", priority:6, verified:true, conf:"Mid"},
-    {axis:4, type:"地域支持", detail:"regional support", url:"https://beer-cruise.net/beer/", priority:6, verified:true, conf:"Mid"}
-  ]},
-  { rank:49, name:"飛騨高山麦酒", location:"岐阜県高山市", flagship:"飛騨高山スタウト", category:"A", tier:"C", score:63.0, axis:{1:3,2:4,3:3,4:3}, availability:"Limited", confidence:"Low", provisional:false, changed:false, chatgpt:{score:63.0, tier:"B(下位)", rank:null}, gemini:{score:null, tier:"圏外", rank:null}, untappd:{score:null, ratings:null, url:null}, notes:"地ビール老舗", counterargument:"IBC2025 Bronze 銘柄が他にもあれば技術的品質=4 → B 67.0", evidences:[
-    {axis:1, type:"IBC Bronze", detail:"IBC2025 Bronze Hida Takayama Beer Stout", url:"https://beertaster.org/medal/ibc2025_award.pdf", priority:2, verified:true, conf:"High"},
-    {axis:2, type:"中位安定", detail:"中位安定", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"Mid"},
-    {axis:4, type:"地域中心", detail:"影響は地域中心", url:"https://www.japanbeertimes.com/2025/04/a-brief-history-of-craft-beer-in-japan/?lang=ja", priority:4, verified:true, conf:"Mid"}
-  ]},
-  { rank:50, name:"ロコビア", location:"千葉県佐倉市", flagship:"佐倉香りの生", category:"E", tier:"C", score:57.0, axis:{1:3,2:3,3:3,4:3}, availability:"Limited", confidence:"Mid", provisional:false, changed:false, chatgpt:{score:54.0, tier:"圏外", rank:null}, gemini:{score:60.0, tier:"C", rank:30}, untappd:{score:null, ratings:null, url:null}, notes:"シード指定 / 佐倉地域貢献", counterargument:"地域貢献を業界影響力=4で再評価 → C 60.0", evidences:[
-    {axis:1, type:"地域コンペ", detail:"Untappd 3.5付近、地域コンペ実績", url:"https://www.locobeer.jp/", priority:5, verified:true, conf:"Mid"},
-    {axis:2, type:"中小標準", detail:"中小規模の標準レベルの安定性", url:"https://beer-cruise.net/beer/021108.html", priority:6, verified:true, conf:"Mid"},
-    {axis:3, type:"地域資源", detail:"地域資源を活用した堅実な醸造", url:"https://crawl.tokyo/craftbeer/fes-event/locobeer/", priority:5, verified:true, conf:"Mid"},
-    {axis:4, type:"佐倉貢献", detail:"千葉・佐倉における長年のコミュニティ貢献", url:"https://ja.wikipedia.org/wiki/%E3%83%AD%E3%82%B3%E3%83%93%E3%82%A2", priority:5, verified:true, conf:"High"}
-  ]}
-];
+let COORDS = {};
+let BREWERIES = [];
 
 // ========== STATE ==========
 let state = {
@@ -2026,7 +1664,32 @@ document.getElementById("clearPinsBtn").onclick = () => {
 };
 
 // ========== INIT ==========
-renderAll();
+async function init() {
+  try {
+    const res = await fetch('./data/breweries.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
+    const data = await res.json();
+    BREWERIES = data.breweries || [];
+    BREWERIES.forEach(b => { if (b.coords) COORDS[b.rank] = b.coords; });
+    if (data.lastUpdated) {
+      const el = document.querySelector('.subtitle');
+      if (el) el.textContent = el.textContent.replace(/2026-05-08時点/, data.lastUpdated + '時点');
+    }
+    renderAll();
+  } catch (e) {
+    document.querySelector('.container').innerHTML = `
+      <div style="padding:32px; font-size:14px; line-height:1.7;">
+        <h2 style="color:#d4af37; margin-top:0;">⚠️ データ読み込み失敗</h2>
+        <p><strong>原因:</strong> ${e.message}</p>
+        <p><code>file://</code> プロトコル直開きでは <code>fetch</code> がブロックされます。以下のいずれかでアクセスしてください:</p>
+        <ul>
+          <li>📡 公開版: <a href="https://takeru-watanabee.github.io/japan-craftbeer-tier50/" style="color:#5b8dbe;">https://takeru-watanabee.github.io/japan-craftbeer-tier50/</a></li>
+          <li>💻 ローカルサーバ: <code>cd このフォルダ && python3 -m http.server 8000</code> → <a href="http://localhost:8000/" style="color:#5b8dbe;">http://localhost:8000/</a></li>
+        </ul>
+      </div>`;
+  }
+}
+init();
 </script>
 </body>
 </html>
