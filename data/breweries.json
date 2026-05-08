@@ -1678,7 +1678,7 @@
       "location": "京都府京都市",
       "flagship": "Andalusite / Flint",
       "category": "C",
-      "tier": "A Prov.",
+      "tier": "A",
       "score": 78,
       "axis": {
         "1": 5,
@@ -1688,10 +1688,10 @@
       },
       "availability": "Allocation",
       "confidence": "Low",
-      "provisional": true,
+      "provisional": false,
       "founded": 2023,
       "changed": true,
-      "changeReason": "WBC2026 Gold (Flint) 発見で 2大会連続Gold、B Prov.→A Prov. に大幅昇格",
+      "changeReason": "WBC2026 Gold (Flint) 発見で 2大会連続Gold、B Prov.→A Prov. に大幅昇格 / 操業3年経過、Provisional から通常 Tier に再分類",
       "chatgpt": {
         "score": 72,
         "tier": "B Prov.",
@@ -2071,7 +2071,7 @@
       "location": "愛知県長久手市",
       "flagship": "Phobia シリーズ",
       "category": "C",
-      "tier": "A Prov.",
+      "tier": "A",
       "score": 75,
       "axis": {
         "1": 4,
@@ -2081,9 +2081,9 @@
       },
       "availability": "Allocation",
       "confidence": "Mid",
-      "provisional": true,
+      "provisional": false,
       "founded": 2022,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 75,
         "tier": "A Prov.",
@@ -2142,7 +2142,8 @@
       "coords": [
         137.0501,
         35.183
-      ]
+      ],
+      "changeReason": "操業4年経過、Provisional から通常 Tier に再分類"
     },
     {
       "rank": 26,
@@ -2150,7 +2151,7 @@
       "location": "埼玉県ときがわ町",
       "flagship": "Hazy Jane",
       "category": "C",
-      "tier": "A Prov.",
+      "tier": "A",
       "score": 75,
       "axis": {
         "1": 4,
@@ -2160,9 +2161,9 @@
       },
       "availability": "Allocation",
       "confidence": "Low",
-      "provisional": true,
+      "provisional": false,
       "founded": 2023,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 75,
         "tier": "A Prov.",
@@ -2221,7 +2222,8 @@
       "coords": [
         139.2914,
         36.0269
-      ]
+      ],
+      "changeReason": "操業3年経過、Provisional から通常 Tier に再分類"
     },
     {
       "rank": 27,
