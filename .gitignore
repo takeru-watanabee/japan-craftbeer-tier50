@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+.AppleDouble
+.LSOverride
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Secrets / Env
+.env
+.env.*
+.envrc
+*credentials*.json
+*.pem
+*.key
+*-token.txt
+
+# Build artifacts
+node_modules/
+dist/
+build/
+*.log
