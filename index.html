@@ -1992,11 +1992,6 @@ function toggleCriteria(forceOpen) {
   }
 }
 criteriaBtn.onclick = () => toggleCriteria();
-// Auto-open on first visit
-if (!localStorage.getItem("tier_criteria_seen")) {
-  toggleCriteria(true);
-  localStorage.setItem("tier_criteria_seen", "1");
-}
 
 // View tabs
 document.querySelectorAll(".view-tab").forEach(t => {
