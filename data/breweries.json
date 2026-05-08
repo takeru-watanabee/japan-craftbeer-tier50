@@ -1279,7 +1279,7 @@
       "flagship": "BAYSTARS ALE / Yuzu Weiss",
       "category": "B",
       "tier": "A",
-      "score": 81,
+      "score": 83,
       "axis": {
         "1": 5,
         "2": 4,
@@ -1289,7 +1289,7 @@
       "availability": "Standard",
       "confidence": "High",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 76,
         "tier": "A",
@@ -1348,7 +1348,8 @@
       "coords": [
         139.638,
         35.4437
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 81→83 (axis 不変)"
     },
     {
       "rank": 16,
@@ -1591,7 +1592,7 @@
       "flagship": "ヴァイツェン / Marron B Abbey",
       "category": "A",
       "tier": "A",
-      "score": 80,
+      "score": 79,
       "axis": {
         "1": 4,
         "2": 5,
@@ -1602,7 +1603,7 @@
       "confidence": "Mid",
       "provisional": false,
       "changed": true,
-      "changeReason": "Web再検証で JGBA2026 Gold ×2 (Marron B Abbey, Laoho) を確認、TOP30 復帰",
+      "changeReason": "Web再検証で JGBA2026 Gold ×2 (Marron B Abbey, Laoho) を確認、TOP30 復帰 / formula 整合性のため score を再計算 80→79 (axis 不変)",
       "chatgpt": {
         "score": 70,
         "tier": "圏外",
@@ -2787,7 +2788,7 @@
       "flagship": "Fun Guy Fungi",
       "category": "E",
       "tier": "B",
-      "score": 71,
+      "score": 74,
       "axis": {
         "1": 4,
         "2": 4,
@@ -2797,7 +2798,7 @@
       "availability": "Limited",
       "confidence": "Mid",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 74,
         "tier": "B",
@@ -2847,7 +2848,8 @@
       "coords": [
         133.5311,
         33.5597
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 71→74 (axis 不変)"
     },
     {
       "rank": 35,
@@ -2856,7 +2858,7 @@
       "flagship": "Are / AJB Sane",
       "category": "C",
       "tier": "B",
-      "score": 70,
+      "score": 71,
       "axis": {
         "1": 4,
         "2": 3,
@@ -2866,7 +2868,7 @@
       "availability": "Limited",
       "confidence": "Mid",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 71,
         "tier": "B",
@@ -2925,7 +2927,8 @@
       "coords": [
         138.4533,
         36.923
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 70→71 (axis 不変)"
     },
     {
       "rank": 36,
@@ -2934,7 +2937,7 @@
       "flagship": "Noresore / Gro Fe Lure",
       "category": "E",
       "tier": "B",
-      "score": 70,
+      "score": 71,
       "axis": {
         "1": 4,
         "2": 3,
@@ -2944,7 +2947,7 @@
       "availability": "Limited",
       "confidence": "Mid",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 71,
         "tier": "B",
@@ -3003,7 +3006,8 @@
       "coords": [
         140.4644,
         40.6033
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 70→71 (axis 不変)"
     },
     {
       "rank": 37,
@@ -3012,7 +3016,7 @@
       "flagship": "Revelation / Nomclassic",
       "category": "C",
       "tier": "B",
-      "score": 70,
+      "score": 71,
       "axis": {
         "1": 4,
         "2": 3,
@@ -3022,7 +3026,7 @@
       "availability": "Limited",
       "confidence": "Mid",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 71,
         "tier": "B(下位)",
@@ -3072,7 +3076,8 @@
       "coords": [
         135.54,
         33.865
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 70→71 (axis 不変)"
     },
     {
       "rank": 38,
@@ -3150,7 +3155,7 @@
       "flagship": "ペールエール",
       "category": "D",
       "tier": "B",
-      "score": 69.5,
+      "score": 69,
       "axis": {
         "1": 3,
         "2": 4,
@@ -3160,7 +3165,7 @@
       "availability": "Tap-only",
       "confidence": "Mid",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 69,
         "tier": "B(下位)",
@@ -3210,7 +3215,8 @@
       "coords": [
         139.7522,
         35.6249
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 69.5→69 (axis 不変)"
     },
     {
       "rank": 40,
@@ -3435,7 +3441,7 @@
       "flagship": "International Lager",
       "category": "B",
       "tier": "B",
-      "score": 72,
+      "score": 74,
       "axis": {
         "1": 4,
         "2": 4,
@@ -3446,7 +3452,7 @@
       "confidence": "Low",
       "provisional": false,
       "changed": true,
-      "changeReason": "WBA2025 受賞を Web 再検証で確認、TOP50 入り",
+      "changeReason": "WBA2025 受賞を Web 再検証で確認、TOP50 入り / formula 整合性のため score を再計算 72→74 (axis 不変)",
       "chatgpt": {
         "score": null,
         "tier": "圏外",
@@ -3593,9 +3599,9 @@
       "flagship": "フルーツスムージーサワー",
       "category": "E",
       "tier": "B",
-      "score": 70,
+      "score": 68,
       "axis": {
-        "1": 4,
+        "1": 3,
         "2": 3,
         "3": 5,
         "4": 3
@@ -3603,7 +3609,7 @@
       "availability": "Limited",
       "confidence": "Low",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": null,
         "tier": "圏外",
@@ -3662,7 +3668,8 @@
       "coords": [
         130.1872,
         32.4561
-      ]
+      ],
+      "changeReason": "axis 1 を 4→3 に修正 (rubric の hard-award 要件未充足)、formula で score 再計算 70→68"
     },
     {
       "rank": 46,
@@ -3938,7 +3945,7 @@
       "flagship": "佐倉香りの生",
       "category": "E",
       "tier": "C",
-      "score": 57,
+      "score": 60,
       "axis": {
         "1": 3,
         "2": 3,
@@ -3948,7 +3955,7 @@
       "availability": "Limited",
       "confidence": "Mid",
       "provisional": false,
-      "changed": false,
+      "changed": true,
       "chatgpt": {
         "score": 54,
         "tier": "圏外",
@@ -4007,7 +4014,8 @@
       "coords": [
         140.2225,
         35.7228
-      ]
+      ],
+      "changeReason": "formula 整合性のため score を再計算 57→60 (axis 不変)"
     }
   ]
 }
