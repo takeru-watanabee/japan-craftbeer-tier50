@@ -1,0 +1,43 @@
+name: Validate data/breweries.json
+
+on:
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'scripts/validate-data.js'
+      - '.github/workflows/validate-data.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'scripts/validate-data.js'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: JSON syntax check
+        run: |
+          python3 -m json.tool data/breweries.json > /dev/null
+          echo "✓ JSON syntax OK"
+
+      - name: Schema and consistency check
+        run: node scripts/validate-data.js
+
+      - name: Provisional candidate report (informational)
+        if: always()
+        run: |
+          echo "## Provisional candidates (informational)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          node scripts/check-provisional.js >> $GITHUB_STEP_SUMMARY 2>&1 || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
