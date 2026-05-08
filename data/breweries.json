@@ -1708,7 +1708,7 @@
         "url": null
       },
       "notes": "2023年設立 / 操業3年 = Provisional",
-      "counterargument": "WBC2026 Gold(Flint)が誤情報 → B 70.0 / 2026年6月以降Provisional撤廃 → A 78.0確定",
+      "counterargument": "WBC2026 Gold(Flint)が誤情報なら → B 70.0",
       "evidences": [
         {
           "axis": 1,
@@ -2100,7 +2100,7 @@
         "url": null
       },
       "notes": "2022年設立 / 4年目 (Provisional境界)",
-      "counterargument": "Provisional撤廃 + Untappd 4.011 検証 → A 78.0",
+      "counterargument": "Untappd brewery aggregate (Gemini主張4.011) が手動取得で確認できれば軸2=4 → A 78.0 / WBC・JGBA で recent 受賞追加で軸1=5 → A 上位",
       "evidences": [
         {
           "axis": 1,
@@ -2180,7 +2180,7 @@
         "url": "https://untappd.com/w/teenage-brewing/542053"
       },
       "notes": "2023年設立 / 3年目 / 両AI暗黙合意で TOP30 入り",
-      "counterargument": "2026年6月以降 Provisional撤廃 + Untappd 3.93 → A 確定",
+      "counterargument": "Untappd 3.93 維持で A 確定 / 国内コンペ受賞追加で軸1=5 → A 上位",
       "evidences": [
         {
           "axis": 1,
