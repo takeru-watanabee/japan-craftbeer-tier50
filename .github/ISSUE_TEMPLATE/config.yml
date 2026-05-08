@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 評価基準・ルーブリックの確認
+    url: https://takeru-watanabee.github.io/japan-craftbeer-tier50/
+    about: ダッシュボード起動後「📖 評価基準・ルーブリック」ボタンで全評価基準を確認できます
+  - name: 💬 議論たたき台レポート
+    url: https://github.com/takeru-watanabee/japan-craftbeer-tier50/blob/main/discussion-deep-report.md
+    about: 各 Tier 判定の反証条件・反論導線・セルフクリティーク

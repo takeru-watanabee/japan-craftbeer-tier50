@@ -1,0 +1,282 @@
+name: Update Reminder (Auto-issue)
+
+on:
+  schedule:
+    # 全て JST 09:00 (= UTC 00:00) 起動。
+    # cron: minute hour day month weekday (UTC)
+    - cron: '0 0 25 3 *'   # 3/25 JGBA  受賞反映リマインド
+    - cron: '0 0 25 4 *'   # 4/25 WBC   受賞反映リマインド
+    - cron: '0 0 1 6 *'    # 6/1  Provisional 解除候補チェック
+    - cron: '0 0 1 8 *'    # 8/1  WBA Country Winner チェック
+    - cron: '0 0 1 11 *'   # 11/1 WBA Style Winner / World's Best チェック
+  workflow_dispatch:
+    inputs:
+      event:
+        description: '手動実行: イベント種別'
+        required: true
+        type: choice
+        options:
+          - JGBA
+          - WBC
+          - Provisional
+          - WBA-Country
+          - WBA-Style
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Determine event from current date
+        id: detect
+        run: |
+          if [ -n "${{ github.event.inputs.event }}" ]; then
+            EVENT="${{ github.event.inputs.event }}"
+          else
+            DATE=$(date -u +%m-%d)
+            case "$DATE" in
+              03-25) EVENT="JGBA" ;;
+              04-25) EVENT="WBC" ;;
+              06-01) EVENT="Provisional" ;;
+              08-01) EVENT="WBA-Country" ;;
+              11-01) EVENT="WBA-Style" ;;
+              *)     EVENT="unknown" ;;
+            esac
+          fi
+          YEAR=$(date -u +%Y)
+          echo "event=$EVENT" >> $GITHUB_OUTPUT
+          echo "year=$YEAR" >> $GITHUB_OUTPUT
+          echo "Detected event: $EVENT for year $YEAR"
+
+      - name: Run provisional check (only for Provisional event)
+        if: steps.detect.outputs.event == 'Provisional'
+        id: provisional
+        run: |
+          OUTPUT=$(node scripts/check-provisional.js 2>&1 || true)
+          # Save multiline output for use in GH issue body
+          {
+            echo "table<<PROV_EOF"
+            echo "$OUTPUT"
+            echo "PROV_EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT: ${{ steps.detect.outputs.event }}
+          YEAR: ${{ steps.detect.outputs.year }}
+          PROV_TABLE: ${{ steps.provisional.outputs.table }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -e
+
+          case "$EVENT" in
+            WBC)
+              TITLE="[Update] World Beer Cup ${YEAR} 受賞反映"
+              BODY=$(cat <<EOF
+          # 🍺 World Beer Cup ${YEAR} 受賞反映
+
+          WBC ${YEAR} の結果が発表されました。日本ブルワリーの全受賞を確認し、\`data/breweries.json\` に反映してください。
+
+          ## 📚 確認するソース
+
+          - WBC Winners: https://www.worldbeercup.org/winners/award-winners/
+          - 公式 PDF: https://cdn.worldbeercup.org/wp-content/uploads/${YEAR}/
+          - 日本特化集計 (Rihobeer): https://rihobeer.com/world-beer-cup-${YEAR}-japan-breweries/
+          - Brewers Association: https://www.brewersassociation.org/
+
+          ## 🛠️ 作業手順
+
+          1. 上記 URL から日本ブルワリーの全 Gold/Silver/Bronze を抽出
+          2. 該当ブルワリーの \`evidences\` 配列に新規受賞を追加 (4 要素揃いのみ)
+          3. 新規 Gold は **技術的品質=5 への昇格** を検討
+          4. 未収録ブルワリーが Gold を取っていたら Phase A 同等の検証で新規追加
+          5. \`lastUpdated\` を本日に更新
+          6. PR 作成 → Pages 自動更新
+
+          ## 🤖 Claude Code 並列検証
+
+          \`prompts/verify-awards.md\` を参照。テンプレに以下を埋めて起動:
+
+          - 大会名: World Beer Cup
+          - 年: ${YEAR}
+
+          ## ✅ チェックリスト
+
+          - [ ] 日本勢の全受賞をリストアップ
+          - [ ] \`data/breweries.json\` 編集
+          - [ ] JSON validity: \`python3 -m json.tool data/breweries.json > /dev/null\`
+          - [ ] ローカル動作確認
+          - [ ] PR 作成
+          - [ ] Pages デプロイ完了確認
+
+          ---
+          🤖 自動生成 (毎年 4/25 09:00 JST cron)
+          EOF
+              )
+              ;;
+
+            JGBA)
+              TITLE="[Update] Japan Great Beer Awards ${YEAR} 受賞反映"
+              BODY=$(cat <<EOF
+          # 🍺 Japan Great Beer Awards ${YEAR} 受賞反映
+
+          JGBA ${YEAR} の結果が発表されました。
+
+          ## 📚 確認するソース
+
+          - JGBA 入賞一覧 (場所順 PDF): https://www.beertaster.org/medal/jgba${YEAR}_award_location.pdf
+          - JGBA 入賞一覧 (スタイル順 PDF): https://www.beertaster.org/medal/jgba${YEAR}_award_beerstyle.pdf
+          - 日本地ビール協会: https://www.beertaster.org/
+
+          ## 🛠️ 作業手順
+
+          1. 場所順 PDF から日本ブルワリーの全 Gold/Silver/Bronze を抽出
+          2. 該当ブルワリーの \`evidences\` 配列に追加 (4 要素揃いのみ)
+          3. **JGBA Gold は国内コンペ最高賞** → 技術的品質 +1 (上限 5) を検討
+          4. \`lastUpdated\` を本日に更新
+          5. PR 作成
+
+          ## 🤖 Claude Code 並列検証
+
+          \`prompts/verify-awards.md\` を参照。
+
+          ## ✅ チェックリスト
+
+          - [ ] PDF から全 Gold 銘柄を抽出
+          - [ ] data/breweries.json 編集
+          - [ ] PR 作成
+          - [ ] Pages デプロイ確認
+
+          ---
+          🤖 自動生成 (毎年 3/25 09:00 JST cron)
+          EOF
+              )
+              ;;
+
+            Provisional)
+              TITLE="[Update] Provisional 解除候補チェック (${YEAR}-06)"
+              BODY=$(cat <<EOF
+          # 📅 Provisional 解除候補チェック
+
+          操業 3 年経過したブルワリーを通常 Tier に再分類するタイミングです。
+
+          ## 該当する候補
+
+          \`\`\`
+          ${PROV_TABLE}
+          \`\`\`
+
+          ## 🛠️ 作業手順
+
+          1. 該当ブルワリーの \`provisional\` を \`false\` に変更
+          2. \`tier\` フィールドから \` Prov.\` サフィックス削除
+          3. \`changeReason\` に「操業 3 年経過、通常 Tier に再分類」を記載
+          4. \`lastUpdated\` を本日に更新
+          5. PR 作成
+
+          ## 💡 自動チェックコマンド (再実行)
+
+          \`\`\`bash
+          node scripts/check-provisional.js
+          \`\`\`
+
+          ---
+          🤖 自動生成 (毎年 6/1 09:00 JST cron)
+          EOF
+              )
+              ;;
+
+            WBA-Country)
+              TITLE="[Update] World Beer Awards ${YEAR} Country Winner 確認"
+              BODY=$(cat <<EOF
+          # 🍺 World Beer Awards ${YEAR} Country Winner 反映
+
+          WBA ${YEAR} の Country Winner ラウンド (国別予選) の結果を反映してください。
+
+          ## 📚 確認するソース
+
+          - WBA Winners: https://www.worldbeerawards.com/winner-beer/beer/${YEAR}/
+          - WBA 公式: https://www.worldbeerawards.com/
+
+          ## WBA 階層 (重要)
+
+          \`Bronze < Silver < Gold < Country Winner < Style Winner < World's Best\`
+
+          - **Country Winner** = 各国 Gold 獲得者の中での代表 1 本 → Style Winner ラウンドへ進出
+          - 階層的には **Gold + α** の評価。技術的品質 5 候補
+
+          ## 🛠️ 作業手順
+
+          1. 日本ブルワリーの Country Winner を全件抽出
+          2. 既存 evidences に追加、または新規ブルワリー追加検討
+          3. \`lastUpdated\` 更新
+          4. **次回 11 月の Style Winner ラウンド結果まで待機する評価がある旨を CHANGELOG にメモ**
+
+          ---
+          🤖 自動生成 (毎年 8/1 09:00 JST cron)
+          EOF
+              )
+              ;;
+
+            WBA-Style)
+              TITLE="[Update] World Beer Awards ${YEAR} Style Winner / World's Best 反映"
+              BODY=$(cat <<EOF
+          # 🏆 World Beer Awards ${YEAR} Style Winner / World's Best 反映
+
+          WBA ${YEAR} 最終ラウンドが発表されました。**世界 1 位 (Style Winner / World's Best) は Tier S 級評価の決定打** です。
+
+          ## 📚 確認するソース
+
+          - WBA Winners: https://www.worldbeerawards.com/winner-beer/beer/${YEAR}/
+          - World's Best Categories: https://www.worldbeerawards.com/winner-beer/beer/${YEAR}/
+
+          ## ⚡ 影響度
+
+          | ランク | 軸 1 (技術的品質) への影響 |
+          |---|---|
+          | Country Winner | +1 候補 (Gold 相当) |
+          | **Style Winner** | **5 確定** (世界 1 位) |
+          | **World's Best [Category]** | **5 確定** (カテゴリ全体の頂点) |
+
+          ## 🛠️ 作業手順
+
+          1. 日本ブルワリーの Style Winner / World's Best を全件抽出
+          2. 該当ブルワリーは技術的品質 = 5 確定
+          3. **未収録ブルワリーが Style Winner を取った場合、TOP50 入りを検討**
+          4. PR 作成
+
+          ## 過去事例
+
+          - 2025: 大山 G ビール (Strong Wheat, Dark Beer Category Champion)
+          - 2024: 宮崎ひでじビール (Dark Barley Wine)
+          - 2020: 富士桜高原麦酒 (Lager Hoppy Pilsener)
+
+          ---
+          🤖 自動生成 (毎年 11/1 09:00 JST cron)
+          EOF
+              )
+              ;;
+
+            *)
+              echo "Unknown event: $EVENT — skipping"
+              exit 0
+              ;;
+          esac
+
+          echo "Creating issue: $TITLE"
+          gh issue create \
+            --repo "$REPO" \
+            --title "$TITLE" \
+            --body "$BODY" \
+            --label "update,automated"
